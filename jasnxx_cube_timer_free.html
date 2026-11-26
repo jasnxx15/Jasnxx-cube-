@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#101116">
+<title>JASNXX Cube Timer</title>
+<style>
+:root{--bg:#0d0f14;--panel:#171a22;--panel2:#202431;--text:#f4f6fb;--muted:#9299aa;--accent:#ff465d;--green:#45df9a;--line:#303646}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -20%,#2a1721 0,#0d0f14 48%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh}
+.app{max-width:760px;margin:auto;padding:18px 14px 36px}.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.brand{font-weight:900;letter-spacing:.08em;font-size:clamp(18px,4vw,25px)}.brand span{color:var(--accent)}.sub{color:var(--muted);font-size:11px;letter-spacing:.16em;margin-top:4px}.pill{border:1px solid #3d4657;border-radius:999px;padding:7px 10px;color:var(--green);font-size:11px;font-weight:800}
+.card{background:linear-gradient(145deg,#1a1e28,#13161d);border:1px solid var(--line);border-radius:20px;padding:16px;margin-bottom:13px;box-shadow:0 12px 32px #0003}
+.scramble-head{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:800;letter-spacing:.12em}.scramble{font-size:17px;line-height:1.7;min-height:58px;margin:12px 0 5px;font-weight:650;word-spacing:5px}.smallbtn,button{border:0;border-radius:12px;padding:11px 14px;background:var(--panel2);color:var(--text);font-weight:750;font-size:13px}
+.timer-card{padding:22px 12px 18px;text-align:center;touch-action:manipulation;user-select:none}.timer-label{color:var(--muted);font-size:11px;letter-spacing:.18em;font-weight:800}.time{font-variant-numeric:tabular-nums;font-size:clamp(64px,17vw,112px);font-weight:850;letter-spacing:-.07em;line-height:1.25;margin:15px 0;color:#fff}.time.ready{color:var(--green)}.hint{color:var(--muted);font-size:12px}.timer-actions{display:flex;gap:9px;justify-content:center;margin-top:16px;flex-wrap:wrap}.primary{background:var(--accent);color:white}.toggle{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:13px;margin-top:14px;justify-content:center}.toggle input{accent-color:var(--accent);width:17px;height:17px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.stat{background:#202431;border-radius:14px;padding:13px 8px;text-align:center}.stat small{display:block;color:var(--muted);font-size:10px;letter-spacing:.12em;font-weight:800}.stat strong{display:block;font-size:21px;margin-top:6px;font-variant-numeric:tabular-nums}
+.section-title{font-size:13px;letter-spacing:.12em;color:var(--muted);font-weight:850;margin:0 0 12px}.history{display:flex;flex-direction:column;gap:7px}.solve{display:flex;justify-content:space-between;align-items:center;background:#202431;border-radius:11px;padding:11px 12px;font-variant-numeric:tabular-nums}.solve b{font-size:15px}.solve span{font-size:11px;color:var(--muted)}.empty{color:var(--muted);font-size:13px;text-align:center;padding:16px 0}.footer{color:#687184;text-align:center;font-size:11px;padding:12px}
+.overlay{position:fixed;inset:0;background:#08090deF;display:flex;align-items:center;justify-content:center;padding:22px;z-index:10}.license{width:min(100%,480px);background:linear-gradient(145deg,#1b2025,#14171c);border:1px solid #3a4544;border-radius:28px;padding:27px 22px;text-align:center;box-shadow:0 20px 80px #0009}.license .eyebrow{color:#83baff;letter-spacing:.16em;font-weight:900;font-size:12px}.license h1{color:#c9ff4d;letter-spacing:.04em;font-size:clamp(27px,8vw,40px);margin:12px 0}.license p{color:#b8c0c8;line-height:1.55;font-size:14px}.license input{width:100%;margin:13px 0 10px;padding:16px 12px;background:#20272a;border:1px solid #465253;border-radius:15px;color:white;text-align:center;font-size:16px;font-weight:800;letter-spacing:.08em}.license button{width:100%;padding:14px;margin-top:8px}.license .free{background:#c9ff4d;color:#111}.license .skip{background:#293039}.license .note{font-size:11px;color:#829098;margin-top:14px}.hidden{display:none}
+@media(min-width:600px){.app{padding-top:28px}.timer-card{padding:30px}.scramble{font-size:20px}}
+</style>
+</head>
+<body>
+<div class="overlay" id="licenseScreen">
+  <div class="license">
+    <div class="eyebrow">FREE ACCESS • NO TRIAL LIMIT</div>
+    <h1>JASNXX CUBE TIMER</h1>
+    <p>This is your own free cube timer. Activate the built-in free access or continue without a key. No paid license or subscription is required.</p>
+    <input id="licenseKey" autocomplete="off" autocapitalize="characters" placeholder="JASNXX-FREE-2026">
+    <button class="free" id="activate">ACTIVATE FREE ACCESS</button>
+    <button class="skip" id="continueFree">CONTINUE FREE — NO KEY</button>
+    <div class="note">Personal project activation only. This is not a CubePulse license.</div>
+    <div id="licenseMessage" style="color:#ff8795;font-size:12px;min-height:17px;margin-top:8px"></div>
+  </div>
+</div>
+<div class="app">
+  <header class="top"><div><div class="brand">JASNXX <span>CUBE TIMER</span></div><div class="sub">SPEEDCUBING WORKSPACE</div></div><div class="pill">● FREE</div></header>
+  <section class="card">
+    <div class="scramble-head"><span>3×3 SCRAMBLE</span><span id="scrambleCount">#1</span></div>
+    <div class="scramble" id="scramble">R U R' U' F2 D L2 U B' R2 F U2</div>
+    <div style="display:flex;gap:8px;justify-content:flex-end"><button class="smallbtn" id="copyScramble">COPY</button><button class="smallbtn primary" id="newScramble">NEW SCRAMBLE ↻</button></div>
+  </section>
+  <section class="card timer-card" id="timerArea">
+    <div class="timer-label" id="timerLabel">READY TO SOLVE</div><div class="time" id="time">00:00.00</div><div class="hint" id="hint">Tap START or press Space</div>
+    <div class="timer-actions"><button class="primary" id="startBtn">START TIMER</button><button id="resetBtn">RESET</button></div>
+    <label class="toggle"><input type="checkbox" id="inspection"> 15-second inspection</label>
+  </section>
+  <section class="card stats">
+    <div class="stat"><small>BEST</small><strong id="best">--</strong></div><div class="stat"><small>AO5</small><strong id="ao5">--</strong></div><div class="stat"><small>SOLVES</small><strong id="count">0</strong></div>
+  </section>
+  <section class="card">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h2 class="section-title">SOLVE HISTORY</h2><button id="clearHistory" style="padding:8px 10px;color:#ff8795">CLEAR</button></div>
+    <div class="history" id="history"><div class="empty">Your solves will appear here.</div></div>
+  </section>
+  <div class="footer">JASNXX CUBE TIMER • Free forever • Times saved on this device</div>
+</div>
+<script>
+(() => {
+ const $=id=>document.getElementById(id);
+ const FREE_KEY="JASNXX-FREE-2026";
+ const overlay=$("licenseScreen");
+ try{if(localStorage.getItem("jasnxx-free-activated")==="yes")overlay.classList.add("hidden")}catch(e){}
+ function unlock(){try{localStorage.setItem("jasnxx-free-activated","yes")}catch(e){}overlay.classList.add("hidden")}
+ $("activate").addEventListener("click",()=>{if($("licenseKey").value.trim().toUpperCase()===FREE_KEY){unlock()}else{$("licenseMessage").textContent="That key isn't correct. Use the free key shown above, or continue without a key."}});
+ $("continueFree").addEventListener("click",unlock);
+ $("licenseKey").addEventListener("keydown",e=>{if(e.key==="Enter")$("activate").click()});
+ const faces=["R","L","U","D","F","B"],suffix=["","'","2"];
+ let scrambleNo=1,state="idle",startAt=0,raf=0,inspectionStart=0,inspectionInterval=0,times=[];
+ try{times=JSON.parse(localStorage.getItem("jasnxx-solves")||"[]");if(!Array.isArray(times))times=[]}catch(e){times=[]}
+ const format=ms=>{if(ms==null||!isFinite(ms))return "--";let cs=Math.floor(ms/10),sec=Math.floor(cs/100),cent=cs%100,min=Math.floor(sec/60);sec%=60;return min?`${String(min).padStart(2,"0")}:${String(sec).padStart(2,"0")}.${String(cent).padStart(2,"0")}`:`${String(sec).padStart(2,"0")}.${String(cent).padStart(2,"0")}`};
+ function makeScramble(){let out=[],prev="",prev2="";for(let i=0;i<20;i++){let f;do{f=faces[Math.floor(Math.random()*6)]}while(f===prev||(["R","L"].includes(f)&&["R","L"].includes(prev2))||(["U","D"].includes(f)&&["U","D"].includes(prev2))||(["F","B"].includes(f)&&["F","B"].includes(prev2)));out.push(f+suffix[Math.floor(Math.random()*3)]);prev2=prev;prev=f}return out.join(" ")}
+ function nextScramble(){$("scramble").textContent=makeScramble();$("scrambleCount").textContent="#"+scrambleNo++}
+ function save(){try{localStorage.setItem("jasnxx-solves",JSON.stringify(times))}catch(e){}}
+ function renderStats(){$("count").textContent=times.length;let vals=times.map(x=>x.ms);$("best").textContent=vals.length?format(Math.min(...vals)):"--";let last=vals.slice(-5);if(last.length===5){let s=[...last].sort((a,b)=>a-b);$("ao5").textContent=format(s.slice(1,4).reduce((a,b)=>a+b,0)/3)}else $("ao5").textContent="--";$("history").innerHTML="";if(!times.length){$("history").innerHTML='<div class="empty">Your solves will appear here.</div>';return}times.slice().reverse().forEach((t,i)=>{let row=document.createElement("div");row.className="solve";let b=document.createElement("b");b.textContent="#"+(times.length-i)+"　"+format(t.ms);let span=document.createElement("span");let d=new Date(t.date);span.textContent=d.toLocaleDateString()+" "+d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});row.append(b,span);$("history").append(row)})}
+ function display(ms){$("time").textContent=format(ms)}
+ function tick(){if(state==="running"){display(performance.now()-startAt);raf=requestAnimationFrame(tick)}}
+ function stopInspection(){clearInterval(inspectionInterval);inspectionInterval=0}
+ function beginInspection(){state="inspection";inspectionStart=Date.now();$("timerLabel").textContent="INSPECTION";$("hint").textContent="Timer starts after inspection";$("time").classList.remove("ready");stopInspection();inspectionInterval=setInterval(()=>{let left=15-Math.floor((Date.now()-inspectionStart)/1000);$("time").textContent=String(Math.max(0,left));if(left<=0){stopInspection();startSolve()}},100)}
+ function startSolve(){stopInspection();state="running";startAt=performance.now();$("timerLabel").textContent="SOLVING";$("hint").textContent="Tap STOP or press Space to finish";$("time").classList.add("ready");cancelAnimationFrame(raf);tick();$("startBtn").textContent="STOP SOLVE"}
+ function finishSolve(){if(state!=="running")return;let ms=performance.now()-startAt;state="idle";cancelAnimationFrame(raf);display(ms);$("timerLabel").textContent="SOLVE COMPLETE";$("hint").textContent="Nice solve! Generate a new scramble.";$("time").classList.remove("ready");$("startBtn").textContent="START TIMER";times.push({ms,date:Date.now()});save();renderStats();nextScramble()}
+ function start(){if(state==="running"){finishSolve();return}if(state==="inspection"){startSolve();return}if($("inspection").checked)beginInspection();else startSolve()}
+ function reset(){state="idle";stopInspection();cancelAnimationFrame(raf);display(0);$("timerLabel").textContent="READY TO SOLVE";$("hint").textContent="Tap START or press Space";$("time").classList.remove("ready");$("startBtn").textContent="START TIMER"}
+ $("startBtn").addEventListener("click",start);$("resetBtn").addEventListener("click",reset);$("newScramble").addEventListener("click",()=>{if(state!=="running"&&state!=="inspection")nextScramble()});
+ $("copyScramble").addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("scramble").textContent);$("copyScramble").textContent="COPIED!";setTimeout(()=>$("copyScramble").textContent="COPY",1000)}catch(e){$("copyScramble").textContent="SELECT TEXT"}});
+ $("clearHistory").addEventListener("click",()=>{if(confirm("Delete all saved solve times on this device?")){times=[];save();renderStats()}});
+ document.addEventListener("keydown",e=>{if(e.code==="Space"&&!e.repeat&&!overlay.classList.contains("hidden")===false&&!["BUTTON","INPUT"].includes(document.activeElement.tagName)){e.preventDefault();start()}});
+ nextScramble();renderStats();display(0);
+})();
+</script>
+</body>
+</html>
