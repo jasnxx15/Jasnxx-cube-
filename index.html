@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090909">
+  <title>JASNXX Cube Algorithms</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="JASNXX Cube Algorithms home">
+        <span class="brand-mark">J</span>
+        <span><strong>JASNXX</strong><small>CUBE ALGORITHMS</small></span>
+      </a>
+      <div class="top-actions">
+        <button class="icon-btn" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">◐</button>
+        <button class="icon-btn" id="settingsToggle" aria-label="Open settings" title="Settings">⚙</button>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="eyebrow"><span class="pulse"></span> YOUR CUBING WORKSPACE</div>
+        <h1>Master every<br><span>move.</span></h1>
+        <p class="hero-copy">A clean, searchable library of speedcubing algorithms. Learn the notation, save your favorites, and build consistency.</p>
+        <div class="hero-stats">
+          <div><strong id="algorithmCount">0</strong><span>ALGORITHMS</span></div>
+          <div><strong id="favoriteCount">0</strong><span>FAVORITES</span></div>
+          <div><strong id="learnedCount">0</strong><span>LEARNED</span></div>
+        </div>
+      </section>
+
+      <section class="toolbar" aria-label="Algorithm filters">
+        <label class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Search name, case, or notation..." autocomplete="off"></label>
+        <div class="filter-row">
+          <select id="categoryFilter" aria-label="Filter category">
+            <option value="All">All categories</option>
+            <option value="Beginner">Beginner</option>
+            <option value="F2L">F2L</option>
+            <option value="OLL">OLL</option>
+            <option value="PLL">PLL</option>
+          </select>
+          <select id="sortFilter" aria-label="Sort algorithms">
+            <option value="default">Default order</option>
+            <option value="name">Name A–Z</option>
+            <option value="moves">Fewest moves first</option>
+            <option value="favorites">Favorites first</option>
+          </select>
+          <button class="filter-chip" id="favoritesOnly" aria-pressed="false">♡ Favorites</button>
+        </div>
+      </section>
+
+      <section class="content-grid">
+        <div class="library-panel">
+          <div class="section-heading">
+            <div><div class="eyebrow">ALGORITHM LIBRARY</div><h2>Explore cases</h2></div>
+            <span class="result-count" id="resultCount">0 results</span>
+          </div>
+          <div id="algorithmList" class="algorithm-list" aria-live="polite"></div>
+          <div id="emptyState" class="empty-state hidden">
+            <span>⌕</span><h3>No algorithms found</h3><p>Try another search or category.</p>
+          </div>
+        </div>
+
+        <aside class="side-column">
+          <section class="detail-card" id="detailCard">
+            <div class="eyebrow">SELECTED ALGORITHM</div>
+            <div class="detail-placeholder"><span>✣</span><h3>Choose an algorithm</h3><p>Select a case from the library to see its moves and learning notes.</p></div>
+          </section>
+          <section class="practice-card">
+            <div class="eyebrow">QUICK PRACTICE</div>
+            <h2>Recall a move.</h2>
+            <p>Test your memory with a random algorithm from the library.</p>
+            <button class="primary-btn full" id="practiceBtn">Start practice <span>↗</span></button>
+            <div id="practiceBox" class="practice-box hidden">
+              <span class="practice-label">NAME THIS ALGORITHM</span>
+              <h3 id="practiceName">—</h3>
+              <p id="practiceHint">Try to recall the notation before revealing it.</p>
+              <button class="secondary-btn full" id="revealPractice">Reveal algorithm</button>
+              <code id="practiceMoves" class="hidden"></code>
+              <button class="text-btn" id="nextPractice">Next case →</button>
+            </div>
+          </section>
+          <section class="notation-card">
+            <div class="eyebrow">NOTATION CHEAT SHEET</div>
+            <div class="notation-grid">
+              <div><b>R</b><span>Right</span></div><div><b>L</b><span>Left</span></div>
+              <div><b>U</b><span>Up</span></div><div><b>D</b><span>Down</span></div>
+              <div><b>F</b><span>Front</span></div><div><b>B</b><span>Back</span></div>
+            </div>
+            <p><strong>'</strong> means counterclockwise · <strong>2</strong> means a 180° turn.</p>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <footer><span>JASNXX CUBE ALGORITHMS</span><span>Practice smart. Turn smooth.</span></footer>
+  </div>
+
+  <dialog id="settingsDialog" class="settings-dialog">
+    <form method="dialog" class="dialog-head"><div><div class="eyebrow">PREFERENCES</div><h2>Settings</h2></div><button class="icon-btn" aria-label="Close settings">×</button></form>
+    <div class="setting-row"><div><strong>Compact algorithm cards</strong><small>Show more cases at once.</small></div><input type="checkbox" id="compactSetting"></div>
+    <div class="setting-row"><div><strong>Show move counts</strong><small>Display estimated move count.</small></div><input type="checkbox" id="moveCountSetting" checked></div>
+    <div class="setting-row"><div><strong>Reduce animations</strong><small>Use simpler transitions.</small></div><input type="checkbox" id="motionSetting"></div>
+    <button class="primary-btn full" id="saveSettings">Save settings</button>
+    <button class="text-btn full" id="clearData">Clear saved favorites & progress</button>
+  </dialog>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
